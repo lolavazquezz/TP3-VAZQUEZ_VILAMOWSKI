@@ -75,7 +75,7 @@ app.get('/wrapper/omdbsearchbypage', async (req, res) => {
 })
 
 app.get('/wrapper/omdbsearchcomplete', async (req, res) => {
-    const s = req.params.s;
+    const s = req.query.s;
     let resultado = await OMDBSearchComplete(s);
     res.send(resultado)
     res.status(200).send("OK")
@@ -83,7 +83,6 @@ app.get('/wrapper/omdbsearchcomplete', async (req, res) => {
 
 app.get('/wrapper/omdbgetbyimdbid', async (req, res) => {
     const i = req.query.i;
-    console.log(req.query.i)
     let resultado = await OMDBGetByImdbID(i);
     res.send(resultado)
     res.status(200).send("OK")
