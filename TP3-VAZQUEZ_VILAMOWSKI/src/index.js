@@ -99,8 +99,8 @@ app.get('/alumno', (req, res) => {
 })
 
 app.get('/alumno/:dni', (req, res) => {
-    const dni = req.params;
-    const alumnoEncontrado = alumnos.find(alumno => alumno.dni === dni);
+    const dni = req.params.dni;
+    const alumnoEncontrado = alumnosArray.find(alumno => alumno.dni == dni);
     if (!alumnoEncontrado) {
     res.status(404).send("Alumno no encontrado");
     }
@@ -108,31 +108,29 @@ app.get('/alumno/:dni', (req, res) => {
 })
 
 app.post('/alumno', (req, res) => {
-    const { username, dni, edad } = req.body;
+    const { username, dni, edad } = req.query;
     if (!username || !dni || !edad) {
     res.status(400).send("Faltan campos");
     }
-
     const nuevoAlumno = new Alumno(username, dni, edad);
-    alumnos.push(nuevoAlumno);
+    alumnosArray.push(nuevoAlumno);
 
     res.status(201).send("Alumno creado satisfactoriamente");
 })
 
 app.delete('/alumno', (req, res) => {
-    const dni = req.body;
+    const dni = req.query.dni;
     if (!dni) {
-    res.status(400).send("Faltan el campo dni");
+    res.status(400).send("Falta el campo dni");
     }
-    const alumnoIndex = alumnos.findIndex(alumno => alumno.dni === dni);
-    if (alumnoIndex === -1) {
+    const alumnoIndex = alumnosArray.findIndex(alumno => alumno.dni == dni);
+    if (alumnoIndex == -1) {
         return res.status(404).send("Alumno no encontrado");
     }
-    alumnos.splice(alumnoIndex, 1);
-    res.status(200).send("Alumno eliminado correctamente");
+    alumnosArray.splice(alumnoIndex, 1);
+    res.status(200).send("Alumno eliminado correctamente" );
 })
 
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)
 })
-
