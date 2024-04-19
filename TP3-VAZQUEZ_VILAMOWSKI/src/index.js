@@ -5,6 +5,8 @@ import {OMDBSearchByPage, OMDBSearchComplete, OMDBGetByImdbID} from
 import axios from "axios";
 import express from "express"; // hacer npm i express
 import cors from "cors"; // hacer npm i cors
+import ValidacionesHelper from './modules/validaciones-helper.js'
+import DateTimeHelper from './modules/datetime-helper.js'
 const app = express();
 const port = 3000;
 
@@ -67,8 +69,8 @@ app.get('/matematica/dividir', (req, res) => {
 })
 
 app.get('/wrapper/omdbsearchbypage', async (req, res) => {
-    const s = req.query.s;
-    const p = req.query.p;
+    const s = ValidacionesHelper.getStringOrDefault(req.query.s, '');;
+    const p = ValidacionesHelper.getIntegerOrDefault(req.query.p, 1);;
     let resultado = await OMDBSearchByPage(s, p);
     res.send(resultado)
     res.status(200).send("OK")
@@ -130,7 +132,22 @@ app.delete('/alumno', (req, res) => {
     alumnosArray.splice(alumnoIndex, 1);
     res.status(200).send("Alumno eliminado correctamente" );
 })
+ 
+app.get('/fechas/isDate', (req, res) => {
+    const fecha = req.query;
+    let valida = DateTimeHelper.isDate(fecha);
+    if (valida){
+        res.status(200).send("OK");
+    } 
+    else {
+        res.status(400).send("Fecha inválida")
+    }
+})
 
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)
 })
+
+
+//PREGUNTARLE SI HAY QUE HACER LO DEVALIDAR EN TODAS 
+//HACER LA CLASE DEL HELPER y de datetime helper
