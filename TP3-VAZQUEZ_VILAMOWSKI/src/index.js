@@ -142,7 +142,8 @@ app.get('/fechas/isDate', (req, res) => {
     else {
         res.status(400).send("Fecha inválida")
     }
-})
+}) //no funciona
+// usar json.stringify
 
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)
