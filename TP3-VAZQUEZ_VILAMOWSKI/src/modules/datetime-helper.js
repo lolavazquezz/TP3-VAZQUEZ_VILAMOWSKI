@@ -8,11 +8,16 @@ class DateTimeHelper {
             return true;
         }
      };
-    getOnlyDate = (fecha = new Date()) => { 
-        
-     };
-    getEdadActual = (fechaNacimiento) => { 
-        
+    getEdadActual = (fechaNac) => { 
+        let fechaN = new Date(fechaNac);
+        const fechaHoy = new Date();
+        let edad = fechaHoy.getFullYear() - fechaN.getFullYear();
+        if ((fechaHoy.getMonth() < fechaN.getMonth()) || 
+        (fechaHoy.getMonth() === fechaN.getMonth() && 
+        fechaHoy.getDate() < fechaN.getDate())){
+            edad --;
+        } 
+        return edad.toString();
      };
     getDiasHastaMiCumple = (fechaNacimiento) => { 
         

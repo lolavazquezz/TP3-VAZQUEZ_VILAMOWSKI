@@ -134,16 +134,39 @@ app.delete('/alumno', (req, res) => {
 })
  
 app.get('/fechas/isDate', (req, res) => {
-    const fecha = req.query;
+    const fecha = req.query.fecha;
     let valida = DateTimeHelper.isDate(fecha);
     if (valida){
-        res.status(200).send("OK");
+        res.status(200).send("Fecha valida");
     } 
     else {
         res.status(400).send("Fecha inválida")
     }
-}) //no funciona
-// usar json.stringify
+}) 
+
+app.get('/fechas/getEdadActual', (req, res) => {
+    const fecha = req.query.fecha;
+    let valida = DateTimeHelper.isDate(fecha);
+    if (valida){
+        let edad = DateTimeHelper.getEdadActual(fecha);
+        res.status(200).send(edad);
+    } 
+    else {
+        res.status(400).send("Fecha inválida")
+    }
+}) 
+
+app.get('/fechas/getDiasHastaMiCumple', (req, res) => {
+    const fecha = req.query.fecha;
+    let valida = DateTimeHelper.isDate(fecha);
+    if (valida){
+        let cantDias = DateTimeHelper.getDiasHastaMiCumple(fecha);
+        res.status(200).send(cantDias);
+    } 
+    else {
+        res.status(400).send("Fecha inválida")
+    }
+}) 
 
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)
