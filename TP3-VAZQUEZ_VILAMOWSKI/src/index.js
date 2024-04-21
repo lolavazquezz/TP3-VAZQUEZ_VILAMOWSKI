@@ -161,17 +161,36 @@ app.get('/fechas/getDiasHastaMiCumple', (req, res) => {
     let valida = DateTimeHelper.isDate(fecha);
     if (valida){
         let cantDias = DateTimeHelper.getDiasHastaMiCumple(fecha);
-        res.status(200).send(cantDias);
+        res.status(200).json("Cantidad de dias que faltan para tu cumple: " + String(cantDias) + ". Edad: " + DateTimeHelper.getEdadActual(fecha));
     } 
     else {
         res.status(400).send("Fecha inválida")
     }
 }) 
 
+app.get('/fechas/getDiaTexto', (req, res) => {
+    const fecha = req.query.fecha;
+    const abr = req.query.abr === 'true';
+    let valida = DateTimeHelper.isDate(fecha);
+    if (valida){
+        res.status(200).json("Dia: " + DateTimeHelper.getDiaTexto(fecha, abr));
+    } 
+    else {
+        res.status(400).send("Fecha inválida")
+    }
+}) 
+
+app.get('/fechas/getMesTexto', (req, res) => {
+    const fecha = req.query.fecha;
+    const abr = req.query.abr === 'true';
+    let valida = DateTimeHelper.isDate(fecha);
+    if (valida){
+        res.status(200).json("Mes: " + DateTimeHelper.getMesTexto(fecha, abr));
+    } 
+    else {
+        res.status(400).send("Fecha inválida")
+    }
+}) 
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)
 })
-
-
-//PREGUNTARLE SI HAY QUE HACER LO DEVALIDAR EN TODAS 
-//HACER LA CLASE DEL HELPER y de datetime helper
