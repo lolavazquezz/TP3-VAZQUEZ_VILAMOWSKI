@@ -19,13 +19,15 @@ res.status(200).send("OK")
 })
 
 app.get('/saludar/:nombre', (req, res) => { // EndPoint "/saludar"
-    const nombre = "juan";
+    const nombre = ValidacionesHelper.getStringOrDefault(req.params.nombre, "Juan");
     res.send('Hola ' + req.params.nombre);
     res.status(200).send("OK")
 })
 
 app.get('/validarfecha/:ano/:mes/:dia', (req, res) => { // EndPoint "/"
-    const { ano, mes, dia } = req.params;
+    const ano = ValidacionesHelper.getIntegerOrDefault(req.params.ano, "2023");
+    const mes = ValidacionesHelper.getIntegerOrDefault(req.params.mes, "02");
+    const dia = ValidacionesHelper.getIntegerOrDefault(req.params.dia, "12");
     const fecha = new Date(`${ano}-${mes}-${dia}`);
     if (isNaN(Date.parse(fecha))){
         res.status(400).send('Fecha invalida');
@@ -37,39 +39,39 @@ app.get('/validarfecha/:ano/:mes/:dia', (req, res) => { // EndPoint "/"
 })
 
 app.get('/matematica/sumar', (req, res) => {
-    const n1 = parseInt(req.query.n1);
-    const n2 = parseInt(req.query.n2);
+    const n1 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n1), 2);
+    const n2 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n2), 1);
     const resultado = sumar(n1, n2);
     res.send(`La suma da ${resultado}`)
     res.status(200).send("OK")
 })
 
 app.get('/matematica/restar', (req, res) => {
-    const n1 = parseInt(req.query.n1);
-    const n2 = parseInt(req.query.n2);
+    const n1 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n1), 2);
+    const n2 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n2), 1);
     const resultado = restar(n1, n2);
     res.send(`La resta da ${resultado}`)
     res.status(200).send("OK")
 })
 
 app.get('/matematica/multiplicar', (req, res) => {
-    const n1 = parseInt(req.query.n1);
-    const n2 = parseInt(req.query.n2);
+    const n1 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n1), 2);
+    const n2 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n2), 1);
     const resultado = multiplicar(n1, n2);
     res.send(`La multiplicación da ${resultado}`)
     res.status(200).send("OK")
 })
 
 app.get('/matematica/dividir', (req, res) => {
-    const n1 = parseInt(req.query.n1);
-    const n2 = parseInt(req.query.n2);
+    const n1 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n1), 2);
+    const n2 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n2), 1);
     const resultado = dividir(n1, n2);
     res.send(`La división da ${resultado}`)
     res.status(200).send("OK")
 })
 
 app.get('/wrapper/omdbsearchbypage', async (req, res) => {
-    const s = ValidacionesHelper.getStringOrDefault(req.query.s, '');;
+    const s = ValidacionesHelper.getStringOrDefault(req.query.s, "Cars");
     const p = ValidacionesHelper.getIntegerOrDefault(req.query.p, 1);;
     let resultado = await OMDBSearchByPage(s, p);
     res.send(resultado)
@@ -77,7 +79,7 @@ app.get('/wrapper/omdbsearchbypage', async (req, res) => {
 })
 
 app.get('/wrapper/omdbsearchcomplete', async (req, res) => {
-    const s = req.query.s;
+    const s = ValidacionesHelper.getStringOrDefault(req.query.s, "Cars");
     let resultado = await OMDBSearchComplete(s);
     res.send(resultado)
     res.status(200).send("OK")
