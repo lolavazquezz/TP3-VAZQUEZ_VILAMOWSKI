@@ -20,8 +20,7 @@ res.status(200).send("OK")
 
 app.get('/saludar/:nombre', (req, res) => { // EndPoint "/saludar"
     const nombre = ValidacionesHelper.getStringOrDefault(req.params.nombre, "Juan");
-    res.send('Hola ' + req.params.nombre);
-    res.status(200).send("OK")
+    res.status(200).send('Hola ' + nombre);
 })
 
 app.get('/validarfecha/:ano/:mes/:dia', (req, res) => { // EndPoint "/"
@@ -33,8 +32,7 @@ app.get('/validarfecha/:ano/:mes/:dia', (req, res) => { // EndPoint "/"
         res.status(400).send('Fecha invalida');
     } 
     else {
-        res.send('Fecha valida');
-        res.status(200).send("OK")
+        res.status(200).send('Fecha valida');
     }
 })
 
@@ -42,54 +40,47 @@ app.get('/matematica/sumar', (req, res) => {
     const n1 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n1), 2);
     const n2 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n2), 1);
     const resultado = sumar(n1, n2);
-    res.send(`La suma da ${resultado}`)
-    res.status(200).send("OK")
+    res.status(200).send(`La suma da ${resultado}`);
 })
 
 app.get('/matematica/restar', (req, res) => {
     const n1 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n1), 2);
     const n2 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n2), 1);
     const resultado = restar(n1, n2);
-    res.send(`La resta da ${resultado}`)
-    res.status(200).send("OK")
+    res.status(200).send(`La resta da ${resultado}`);
 })
 
 app.get('/matematica/multiplicar', (req, res) => {
     const n1 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n1), 2);
     const n2 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n2), 1);
     const resultado = multiplicar(n1, n2);
-    res.send(`La multiplicación da ${resultado}`)
-    res.status(200).send("OK")
+    res.status(200).send(`La multiplicación da ${resultado}`);
 })
 
 app.get('/matematica/dividir', (req, res) => {
     const n1 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n1), 2);
     const n2 = ValidacionesHelper.getIntegerOrDefault(parseInt(req.query.n2), 1);
     const resultado = dividir(n1, n2);
-    res.send(`La división da ${resultado}`)
-    res.status(200).send("OK")
+    res.status(200).send(`La división da ${resultado}`);
 })
 
 app.get('/wrapper/omdbsearchbypage', async (req, res) => {
     const s = ValidacionesHelper.getStringOrDefault(req.query.s, "Cars");
     const p = ValidacionesHelper.getIntegerOrDefault(req.query.p, 1);;
     let resultado = await OMDBSearchByPage(s, p);
-    res.send(resultado)
-    res.status(200).send("OK")
+    res.status(200).send(resultado);
 })
 
 app.get('/wrapper/omdbsearchcomplete', async (req, res) => {
     const s = ValidacionesHelper.getStringOrDefault(req.query.s, "Cars");
     let resultado = await OMDBSearchComplete(s);
-    res.send(resultado)
-    res.status(200).send("OK")
+    res.status(200).send(resultado);
 })
 
 app.get('/wrapper/omdbgetbyimdbid', async (req, res) => {
-    const i = req.query.i;
+    const i = ValidacionesHelper.getStringOrDefault(req.query.i, "tt0317219");
     let resultado = await OMDBGetByImdbID(i);
-    res.send(resultado)
-    res.status(200).send("OK")
+    res.status(200).send(resultado);
 })
 
 const alumnosArray = [];
@@ -98,12 +89,11 @@ alumnosArray.push(new Alumno("Matias Queroso", "28946255", 51));
 alumnosArray.push(new Alumno("Elba Calao" , "32623391", 18));
 app.get('/alumno', (req, res) => {
     let resultado = alumnosArray.toString();
-    res.send(resultado)
-    res.status(200).send("OK")
+    res.status(200).send(resultado);
 })
 
 app.get('/alumno/:dni', (req, res) => {
-    const dni = req.params.dni;
+    const dni = ValidacionesHelper.getIntegerOrDefault(req.params.dni, 22888444);
     const alumnoEncontrado = alumnosArray.find(alumno => alumno.dni == dni);
     if (!alumnoEncontrado) {
     res.status(404).send("Alumno no encontrado");
@@ -112,7 +102,9 @@ app.get('/alumno/:dni', (req, res) => {
 })
 
 app.post('/alumno', (req, res) => {
-    const { username, dni, edad } = req.query;
+    const username = ValidacionesHelper.getStringOrDefault(req.query.username, "José Juan");
+    const dni = ValidacionesHelper.getIntegerOrDefault(req.query.dni, 22888124);
+    const edad = ValidacionesHelper.getIntegerOrDefault(req.query.edad, 40);
     if (!username || !dni || !edad) {
     res.status(400).send("Faltan campos");
     }
@@ -123,7 +115,7 @@ app.post('/alumno', (req, res) => {
 })
 
 app.delete('/alumno', (req, res) => {
-    const dni = req.query.dni;
+    const dni = ValidacionesHelper.getIntegerOrDefault(req.query.dni, 22888444);
     if (!dni) {
     res.status(400).send("Falta el campo dni");
     }
@@ -142,7 +134,7 @@ app.get('/fechas/isDate', (req, res) => {
         res.status(200).send("Fecha valida");
     } 
     else {
-        res.status(400).send("Fecha inválida")
+        res.status(400).send("Fecha inválida");
     }
 }) 
 
@@ -154,7 +146,7 @@ app.get('/fechas/getEdadActual', (req, res) => {
         res.status(200).send(edad);
     } 
     else {
-        res.status(400).send("Fecha inválida")
+        res.status(400).send("Fecha inválida");
     }
 }) 
 
@@ -166,7 +158,7 @@ app.get('/fechas/getDiasHastaMiCumple', (req, res) => {
         res.status(200).json("Cantidad de dias que faltan para tu cumple: " + String(cantDias) + ". Edad: " + DateTimeHelper.getEdadActual(fecha));
     } 
     else {
-        res.status(400).send("Fecha inválida")
+        res.status(400).send("Fecha inválida");
     }
 }) 
 
@@ -178,7 +170,7 @@ app.get('/fechas/getDiaTexto', (req, res) => {
         res.status(200).json("Dia: " + DateTimeHelper.getDiaTexto(fecha, abr));
     } 
     else {
-        res.status(400).send("Fecha inválida")
+        res.status(400).send("Fecha inválida");
     }
 }) 
 
@@ -190,7 +182,7 @@ app.get('/fechas/getMesTexto', (req, res) => {
         res.status(200).json("Mes: " + DateTimeHelper.getMesTexto(fecha, abr));
     } 
     else {
-        res.status(400).send("Fecha inválida")
+        res.status(400).send("Fecha inválida");
     }
 }) 
 app.listen(port, () => {
