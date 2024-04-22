@@ -24,9 +24,9 @@ app.get('/saludar/:nombre', (req, res) => { // EndPoint "/saludar"
 })
 
 app.get('/validarfecha/:ano/:mes/:dia', (req, res) => { // EndPoint "/"
-    const ano = ValidacionesHelper.getIntegerOrDefault(req.params.ano, "2023");
-    const mes = ValidacionesHelper.getIntegerOrDefault(req.params.mes, "02");
-    const dia = ValidacionesHelper.getIntegerOrDefault(req.params.dia, "12");
+    const ano = ValidacionesHelper.getIntegerOrDefault(req.params.ano, 2023);
+    const mes = ValidacionesHelper.getIntegerOrDefault(req.params.mes, 2);
+    const dia = ValidacionesHelper.getIntegerOrDefault(req.params.dia, 12);
     const fecha = new Date(`${ano}-${mes}-${dia}`);
     if (isNaN(Date.parse(fecha))){
         res.status(400).send('Fecha invalida');
