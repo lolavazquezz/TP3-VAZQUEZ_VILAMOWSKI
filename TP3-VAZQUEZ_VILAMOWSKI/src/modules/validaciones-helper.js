@@ -8,4 +8,5 @@ class ValidacionesHelper {
         if (typeof value !== 'string') return defaultValue;
         return value;
     }
+}
     export default new ValidacionesHelper();
